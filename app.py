@@ -27,7 +27,7 @@ def checkMsg(data):
         print("WEWOWEWOWEWOWEWO")
 
     infile.close()
-
+    print(data["group_id"], data["membership_id"], os.getenv("ACCESS_TOKEN"))
     # url  = f'https://api.groupme.com/v3/bots/groups/{data["group_id"]}/members/{data["membership_id"]}/remove?token={os.getenv('ACCESS_TOKEN')}'
     # print(url)
 
