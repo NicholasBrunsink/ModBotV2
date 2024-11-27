@@ -23,8 +23,6 @@ def checkMsg(data):
     words = infile.read().replace('\n', ' ').split(" ") 
     words_re = re.compile("|".join(words))
 
-    # print(data)
-    # print(data["text"])
     if words_re.search(data["text"].lower()):
         group = data["group_id"]
         userId = data["sender_id"]
@@ -32,8 +30,6 @@ def checkMsg(data):
 
         getUrl=f"https://api.groupme.com/v3/groups/{group}?token={token}"
         resp=requests.get(getUrl).json()
-        # print(getUrl)
-        # print(resp)
         if resp["meta"]["code"] != 200:
             return
         members = resp["response"]
