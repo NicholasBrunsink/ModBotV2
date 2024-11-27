@@ -28,7 +28,7 @@ def checkMsg(data):
 
     infile.close()
     print(data["group_id"], data["id"], os.getenv("ACCESS_TOKEN"))
-    url  = f'https://api.groupme.com/v3/bots/groups/{data["group_id"]}/members/{data["id"]}/remove?token={os.getenv('ACCESS_TOKEN')}'
+    url  = f'https://api.groupme.com/v3/bots/groups/{data["group_id"]}/members/{data["id"]}/remove?token='
     print(url)
 
     # $ curl -X POST -H https://api.groupme.com/v3/groups?token=YOUR_ACCESS_TOKEN
