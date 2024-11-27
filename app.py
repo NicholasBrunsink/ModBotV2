@@ -21,7 +21,8 @@ def checkMsg(data):
     words = infile.read() 
     wordList = words.replace('\n', ' ').split(" ") 
     words_re = re.compile("|".join(wordList))
-
+    print(data["text"])
+    print(words_re)
     if words_re.search(data["text"]):
         print("WEWOWEWOWEWOWEWO")
 
