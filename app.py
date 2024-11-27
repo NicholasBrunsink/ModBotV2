@@ -19,13 +19,14 @@ def webhook():
 
 def checkMsg(data):
     # opening the file in read mode 
-    my_file = open("bannedwords.txt", "r") 
+    infile = open("bannedwords.txt", "r") 
     # reading the file 
-    words = my_file.read() 
+    words = infile.read() 
     # replacing end of line('/n') with ' ' and 
     # splitting the text it further when '.' is seen. 
-    wordList = data.replace('\n', ' ').split(".") 
+    wordList = words.replace('\n', ' ').split(".") 
     print(wordList)
+    infile.close()
 
     # url  = f'https://api.groupme.com/v3/bots/groups/{data["group_id"]}/members/{data["membership_id"]}/remove?token={os.getenv('ACCESS_TOKEN')}'
     # print(url)
