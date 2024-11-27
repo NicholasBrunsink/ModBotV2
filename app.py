@@ -23,7 +23,7 @@ def checkMsg(data):
     words_re = re.compile("|".join(wordList))
     print(data["text"])
     print(words_re)
-    if words_re.search(data["text"]):
+    if words_re.search(data["text"].lower()):
         print("WEWOWEWOWEWOWEWO")
 
     infile.close()
