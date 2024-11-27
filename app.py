@@ -24,21 +24,11 @@ def checkMsg(data):
     print(data["text"])
     print(words_re)
     if words_re.search(data["text"].lower()):
-        print("WEWOWEWOWEWOWEWO")
-
+        group = data["group_id"]
+        id = data["id"]
+        token = os.getenv("ACCESS_TOKEN")
+        url  = f'https://api.groupme.com/v3/bots/groups/{group}/members/{id}/remove?token={token}'
+        requests.post(url)
     infile.close()
-    group = data["group_id"]
-    id = data["id"]
-    token = os.getenv("ACCESS_TOKEN")
-    url  = f'https://api.groupme.com/v3/bots/groups/{group}/members/{id}/remove?token={token}'
-    print(url)
 
-    # $ curl -X POST -H https://api.groupme.com/v3/groups?token=YOUR_ACCESS_TOKEN
-    
-#   data = {
-#           'bot_id' : os.getenv('BOT_ID'),
-#           'text'   : msg,
-#          }
-#   request = Request(url, urlencode(data).encode())
-#   json = urlopen(request).read().decode()
     return
