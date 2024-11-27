@@ -18,6 +18,7 @@ def webhook():
 
 def checkMsg(data):
     infile = open("bannedwords.txt", "r") 
+    safefile = open("safepeople.txt", "r")
     words = infile.read() 
     wordList = words.replace('\n', ' ').split(" ") 
     words_re = re.compile("|".join(wordList))
@@ -28,9 +29,10 @@ def checkMsg(data):
         userId = data["sender_id"]
         token = os.getenv("ACCESS_TOKEN")
         getUrl="https://api.groupme.com/v3/groups/{group}?token={token}"
-        resp=requests.get(getUrl).json()
+        resp=requests.get(getUrl).json()["response"]
 
         id=""
+        print(resp)
         for member in resp["members"]:
             if member["user_id"] == userId:
                 id = member["id"]
@@ -41,5 +43,6 @@ def checkMsg(data):
         print(url)
         # print(requests.post(url))
     infile.close()
+    safefile.close()
 
     return
