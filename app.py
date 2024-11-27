@@ -35,7 +35,7 @@ def checkMsg(data):
         print(resp)
         if resp["meta"]["code"] != 200:
             return
-        members = resp["respose"]
+        members = resp["response"]
         id=""
 
         for member in members["members"]:
