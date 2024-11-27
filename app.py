@@ -27,6 +27,8 @@ def checkMsg(data):
 
         words_re = re.compile("|".join(words))
 
+        print(words_re)
+
         if words_re.search(data["text"].lower()):
             group = data["group_id"]
             userId = data["sender_id"]
