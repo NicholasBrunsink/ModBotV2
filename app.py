@@ -1,5 +1,6 @@
 import os
 import json
+import requests
 
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -10,19 +11,19 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def webhook():
-  data = request.get_json()
+    data = request.get_json()
 
-  # We don't want to reply to ourselves!
-  if data['name'] != 'apnorton-test-bot':
-    msg = '{}, you sent "{}".'.format(data['name'], data['text'])
-    print(data)
-    send_message(msg)
+    checkMsg(data)
 
-  return "ok", 200
+    return "ok", 200
 
-def send_message(msg):
-#   url  = 'https://api.groupme.com/v3/bots/post'
+def checkMsg(data):
 
+    url  = f'https://api.groupme.com/v3/bots/groups/{data["group_id"]}/members/{data['membership_id']}/remove?token={os.getenv('ACCESS_TOKEN')}'
+    print(url)
+
+    # $ curl -X POST -H https://api.groupme.com/v3/groups?token=YOUR_ACCESS_TOKEN
+    
 #   data = {
 #           'bot_id' : os.getenv('BOT_ID'),
 #           'text'   : msg,
