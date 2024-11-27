@@ -27,28 +27,33 @@ def checkMsg(data):
 
         words_re = re.compile("|".join(words))
 
-        print(words_re)
-
         if words_re.search(data["text"].lower()):
             group = data["group_id"]
             userId = data["sender_id"]
             token = os.getenv("ACCESS_TOKEN")
+
+            print(data)
 
             getUrl=f"https://api.groupme.com/v3/groups/{group}?token={token}"
             resp=requests.get(getUrl).json()
             if resp["meta"]["code"] != 200:
                 return
             members = resp["response"]
-            id=""
+            id=""; name=""
             for member in members["members"]:
-                if member["user_id"] == userId and member["id"] not in safe:
-                    id = member["id"]
+                if member["user_id"] == userId:
                     name = member["name"]
-                    print(f"kicking {id}: {name}")
+                    if member["user_id"] not in safe:
+                        id = member["id"]
+                        print(f"kicking {id}: {name}")
                     break
 
             if id == "":
-                print("not kicking (no user or protected user)")
+                print("not kicking ", end="-")
+                if name=="":
+                    print("no user")
+                else:
+                    print("protected user")
                 return
 
             url  = f'https://api.groupme.com/v3/groups/{group}/members/{id}/remove?token={token}'
