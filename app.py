@@ -19,7 +19,7 @@ def webhook():
 
 def checkMsg(data):
 
-    url  = f'https://api.groupme.com/v3/bots/groups/{data["group_id"]}/members/{data['membership_id']}/remove?token={os.getenv('ACCESS_TOKEN')}'
+    url  = f'https://api.groupme.com/v3/bots/groups/{data["group_id"]}/members/{data["membership_id"]}/remove?token={os.getenv('ACCESS_TOKEN')}'
     print(url)
 
     # $ curl -X POST -H https://api.groupme.com/v3/groups?token=YOUR_ACCESS_TOKEN
