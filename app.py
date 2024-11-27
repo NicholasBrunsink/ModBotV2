@@ -28,7 +28,7 @@ def checkMsg(data):
         userId = data["sender_id"]
         token = os.getenv("ACCESS_TOKEN")
         getUrl="https://api.groupme.com/v3/groups/{group}?token={token}"
-        resp=requests.get(getUrl)
+        resp=requests.get(getUrl).json()
 
         id=""
         for member in resp["members"]:
@@ -37,7 +37,7 @@ def checkMsg(data):
                 break
         print(id)
 
-        url  = f'https://api.groupme.com/v3/bots/groups/{group}/members/{id}/remove?token={token}'
+        url  = f'https://api.groupme.com/v3/groups/{group}/members/{id}/remove?token={token}'
         print(url)
         # print(requests.post(url))
     infile.close()
