@@ -32,8 +32,8 @@ def checkMsg(data):
         getUrl=f"https://api.groupme.com/v3/groups/{group}?token={token}"
         resp=requests.get(getUrl).json()
 
-        if resp["meta"]["code"] != "200":
-            return
+        # if resp["meta"]["code"] != "200":
+        #     return
         members = resp["respose"]
         id=""
         print(getUrl)
