@@ -46,7 +46,7 @@ def checkMsg(data):
 
         url  = f'https://api.groupme.com/v3/groups/{group}/members/{id}/remove?token={token}'
         print(url)
-        # print(requests.post(url))
+        print(requests.post(url))
     infile.close()
     safefile.close()
 
