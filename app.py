@@ -28,6 +28,7 @@ def checkMsg(data):
         id = data["id"]
         token = os.getenv("ACCESS_TOKEN")
         url  = f'https://api.groupme.com/v3/bots/groups/{group}/members/{id}/remove?token={token}'
+        print(url)
         requests.post(url)
     infile.close()
 
