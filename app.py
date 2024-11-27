@@ -24,7 +24,7 @@ def checkMsg(data):
     words = infile.read() 
     # replacing end of line('/n') with ' ' and 
     # splitting the text it further when '.' is seen. 
-    wordList = words.replace('\n', ' ').split(".") 
+    wordList = words.replace('\n', ' ').split(" ") 
     print(wordList)
     infile.close()
 
