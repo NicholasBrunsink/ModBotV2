@@ -21,6 +21,9 @@ def checkMsg(data):
     safefile = open("safepeople.txt", "r")
     safe = safefile.read().replace('\n', " ").split(" ")
     words = infile.read().replace('\n', ' ').split(" ") 
+    infile.close()
+    safefile.close()
+    
     words_re = re.compile("|".join(words))
 
     if words_re.search(data["text"].lower()):
@@ -41,11 +44,12 @@ def checkMsg(data):
                 print("kicking")
                 break
         # print(id)
+        if id == "":
+            print("not kicking (no user or protected user)")
+            return
 
         url  = f'https://api.groupme.com/v3/groups/{group}/members/{id}/remove?token={token}'
         print(url)
         print(requests.post(url))
-    infile.close()
-    safefile.close()
 
     return
