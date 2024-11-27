@@ -28,10 +28,12 @@ def checkMsg(data):
         group = data["group_id"]
         userId = data["sender_id"]
         token = os.getenv("ACCESS_TOKEN")
+
         getUrl="https://api.groupme.com/v3/groups/{group}?token={token}"
         resp=requests.get(getUrl).json()
 
         id=""
+        print(getUrl)
         print(resp)
         for member in resp["members"]:
             if member["user_id"] == userId:
