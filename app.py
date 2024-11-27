@@ -29,7 +29,7 @@ def checkMsg(data):
         userId = data["sender_id"]
         token = os.getenv("ACCESS_TOKEN")
 
-        getUrl="https://api.groupme.com/v3/groups/{group}?token={token}"
+        getUrl=f"https://api.groupme.com/v3/groups/{group}?token={token}"
         resp=requests.get(getUrl).json()
 
         id=""
