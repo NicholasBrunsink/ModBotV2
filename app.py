@@ -19,11 +19,12 @@ def webhook():
 def checkMsg(data):
     infile = open("bannedwords.txt", "r") 
     safefile = open("safepeople.txt", "r")
-    words = infile.read() 
-    wordList = words.replace('\n', ' ').split(" ") 
-    words_re = re.compile("|".join(wordList))
-    print(data)
-    print(data["text"])
+    safe = safefile.read().replace('\n', " ").split(" ")
+    words = infile.read().replace('\n', ' ').split(" ") 
+    words_re = re.compile("|".join(words))
+
+    # print(data)
+    # print(data["text"])
     if words_re.search(data["text"].lower()):
         group = data["group_id"]
         userId = data["sender_id"]
@@ -31,18 +32,19 @@ def checkMsg(data):
 
         getUrl=f"https://api.groupme.com/v3/groups/{group}?token={token}"
         resp=requests.get(getUrl).json()
-        print(getUrl)
-        print(resp)
+        # print(getUrl)
+        # print(resp)
         if resp["meta"]["code"] != 200:
             return
         members = resp["response"]
         id=""
 
         for member in members["members"]:
-            if member["user_id"] == userId:
+            if member["user_id"] == userId and member["id"] not in safe:
                 id = member["id"]
+                print("kicking")
                 break
-        print(id)
+        # print(id)
 
         url  = f'https://api.groupme.com/v3/groups/{group}/members/{id}/remove?token={token}'
         print(url)
