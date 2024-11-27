@@ -27,6 +27,7 @@ def checkMsg(data):
     words_re = re.compile("|".join(words))
 
     if words_re.search(data["text"].lower()):
+        print(data)
         group = data["group_id"]
         userId = data["sender_id"]
         token = os.getenv("ACCESS_TOKEN")
@@ -49,7 +50,7 @@ def checkMsg(data):
             return
 
         url  = f'https://api.groupme.com/v3/groups/{group}/members/{id}/remove?token={token}'
-        print(requests.post(url))
+        requests.post(url)
         print(f"Kicked {id} ({name}) from {group}")
 
     return
