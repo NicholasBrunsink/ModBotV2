@@ -23,7 +23,7 @@ def checkMsg(data):
     words = infile.read().replace('\n', ' ').split(" ") 
     infile.close()
     safefile.close()
-    
+
     words_re = re.compile("|".join(words))
 
     if words_re.search(data["text"].lower()):
@@ -41,9 +41,9 @@ def checkMsg(data):
         for member in members["members"]:
             if member["user_id"] == userId and member["id"] not in safe:
                 id = member["id"]
-                print("kicking")
+                print(f"kicking {id}: {member["name"]}")
                 break
-        # print(id)
+
         if id == "":
             print("not kicking (no user or protected user)")
             return
