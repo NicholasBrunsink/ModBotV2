@@ -33,8 +33,8 @@ def checkMsg(data):
         resp=requests.get(getUrl).json()
         print(getUrl)
         print(resp)
-        # if resp["meta"]["code"] != "200":
-        #     return
+        if resp["meta"]["code"] != 200:
+            return
         members = resp["respose"]
         id=""
 
