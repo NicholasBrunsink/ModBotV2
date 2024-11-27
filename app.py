@@ -37,7 +37,6 @@ def checkMsg(data):
             return
         members = resp["response"]
         id=""
-
         for member in members["members"]:
             if member["user_id"] == userId and member["id"] not in safe:
                 id = member["id"]
@@ -49,7 +48,7 @@ def checkMsg(data):
             return
 
         url  = f'https://api.groupme.com/v3/groups/{group}/members/{id}/remove?token={token}'
-        print(url)
         print(requests.post(url))
+        print(f"Kicked {id} ({member["name"]}) from {group}")
 
     return
