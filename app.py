@@ -20,11 +20,12 @@ def checkMsg(data):
     if data["sender_type"] == "user":
         infile = open("bannedwords.txt", "r") 
         safefile = open("safepeople.txt", "r")
-        safe = safefile.read().replace('\n', " ").split(" ")
+        safe = safefile.read().replace("\n", "<>").split(">")
+        safe = [x.split(":")[0] if x[0]!=":" else "<" for x in safe]
+        safe.remove("<")
         words = infile.read().replace('\n', ' ').split(" ") 
         infile.close()
         safefile.close()
-
         words_re = re.compile("|".join(words))
 
         if words_re.search(data["text"].lower()):
