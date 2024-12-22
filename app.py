@@ -17,7 +17,6 @@ safe.remove("<")
 words = infile.read().replace('\n', ' ').split(" ") 
 infile.close()
 safefile.close()
-data = request.get_json()
 words_re = re.compile("|".join(words))
 
 app = Flask(__name__)
@@ -25,6 +24,7 @@ app = Flask(__name__)
 # is called by GroupMe API. If the message is sent by a user, it will call checkMsg
 @app.route('/', methods=['POST'])
 def webhook():
+    data = request.get_json()
     if data["sender_type"] == "user" and data["sender_id"] not in safe:
         checkMsg(data)
     else:
