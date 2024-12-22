@@ -8,6 +8,15 @@ from urllib.request import Request, urlopen
 
 from flask import Flask, request
 
+infile = open("bannedwords.txt", "r") 
+safefile = open("safepeople.txt", "r")
+safe = safefile.read().replace("\n", "<>").split(">")
+safe = [x.split(":")[0] if x[0]!=":" else "<" for x in safe]
+safe.remove("<")
+words = infile.read().replace('\n', ' ').split(" ") 
+infile.close()
+safefile.close()
+
 app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
@@ -18,22 +27,12 @@ def webhook():
 
 def checkMsg(data):
     if data["sender_type"] == "user":
-        infile = open("bannedwords.txt", "r") 
-        safefile = open("safepeople.txt", "r")
-        safe = safefile.read().replace("\n", "<>").split(">")
-        safe = [x.split(":")[0] if x[0]!=":" else "<" for x in safe]
-        safe.remove("<")
-        words = infile.read().replace('\n', ' ').split(" ") 
-        infile.close()
-        safefile.close()
         words_re = re.compile("|".join(words))
 
         if words_re.search(data["text"].lower()):
             group = data["group_id"]
             userId = data["sender_id"]
             token = os.getenv("ACCESS_TOKEN")
-
-            print(data)
 
             getUrl=f"https://api.groupme.com/v3/groups/{group}?token={token}"
             resp=requests.get(getUrl).json()
