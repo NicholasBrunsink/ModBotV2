@@ -25,7 +25,7 @@ def webhook():
     data = request.get_json()
     words_re = re.compile("|".join(words))
 
-    if data["sender_type"] == "user" and data["sender_id"] not in safe:
+    if data["sender_type"] == "user" and data["sender_id"] not in ["0123456"]:
         checkMsg(data, words_re)
     else:
         print("Protected User and/or system message")
