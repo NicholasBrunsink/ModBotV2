@@ -9,7 +9,6 @@ from urllib.request import Request, urlopen
 from flask import Flask, request
 
 
-
 app = Flask(__name__)
 
 # is called by GroupMe API. If the message is sent by a user, it will call checkMsg
