@@ -8,24 +8,26 @@ from urllib.request import Request, urlopen
 
 from flask import Flask, request
 
-# Creates list of banned words and safe users. Runs when the app is first created
-infile = open("bannedwords.txt", "r") 
-safefile = open("safepeople.txt", "r")
-safe = safefile.read().replace("\n", "<>").split(">")
-safe = [x.split(":")[0] if x[0]!=":" else "<" for x in safe].remove("<")
-words = infile.read().replace('\n', ' ').split(" ") 
-infile.close()
-safefile.close()
-words_re = re.compile("|".join(words))
+
 
 app = Flask(__name__)
 
 # is called by GroupMe API. If the message is sent by a user, it will call checkMsg
 @app.route('/', methods=['POST'])
 def webhook():
+    # Creates list of banned words and safe users. Runs when the app is first created
+    infile = open("bannedwords.txt", "r") 
+    safefile = open("safepeople.txt", "r")
+    safe = safefile.read().replace("\n", "<>").split(">")
+    safe = [x.split(":")[0] if x[0]!=":" else "<" for x in safe].remove("<")
+    words = infile.read().replace('\n', ' ').split(" ") 
+    infile.close()
+    safefile.close()
     data = request.get_json()
+    words_re = re.compile("|".join(words))
+
     if data["sender_type"] == "user" and data["sender_id"] not in safe:
-        checkMsg(data)
+        checkMsg(data, words_re)
     else:
         print("Protected User and/or system message")
 
@@ -35,8 +37,8 @@ def webhook():
     Checks incoming message for any banned words
     Doesn't kick if a user is part of the protected user's list
 """ 
-def checkMsg(data):
-    if words_re.search(data["text"].lower()):
+def checkMsg(data, words):
+    if words.search(data["text"].lower()):
         group = data["group_id"]
         userId = data["sender_id"]
         token = os.getenv("ACCESS_TOKEN")
