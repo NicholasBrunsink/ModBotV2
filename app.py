@@ -27,6 +27,8 @@ def webhook():
     data = request.get_json()
     if data["sender_type"] == "user" and data["sender_id"] not in safe:
         checkMsg(data)
+    else:
+        print("safe user or system")
     return "ok", 200
 
 """
@@ -35,6 +37,7 @@ def webhook():
 """ 
 def checkMsg(data):
     if words_re.search(data["text"].lower()):
+        print("banned word detected, initiating kick")
         group = data["group_id"]
         userId = data["sender_id"]
         token = os.getenv("ACCESS_TOKEN")
