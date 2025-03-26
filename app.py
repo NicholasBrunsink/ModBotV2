@@ -41,13 +41,15 @@ def checkMsg(data):
         group = data["group_id"]
         userId = data["sender_id"]
         token = os.getenv("ACCESS_TOKEN")
-
+        print("token obtained")
         # get source group's members list
         getUrl=f"https://api.groupme.com/v3/groups/{group}?token={token}"
         resp=requests.get(getUrl).json()
         if resp["meta"]["code"] != 200:
+            print("failed to obtain group list")
             return
-        
+        else:
+            print("obtained group list")
         # searches members list to find user's group_id of sent message
         # Also grabs their name for logging purposes
         members = resp["response"]
