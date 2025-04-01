@@ -1,23 +1,28 @@
 import os
-import json
 import requests
 import re
-
-from urllib.parse import urlencode
-from urllib.request import Request, urlopen
-
 from flask import Flask, request
 
 # Creates list of banned words and safe users. Runs when the app is first created
 infile = open("bannedwords.txt", "r") 
-safefile = open("safepeople.txt", "r")
-safe = safefile.read().replace("\n", "<>").split(">")
-safe = [x.split(":")[0] if x[0]!=":" else "<" for x in safe]
-safe.remove("<")
+whitelistFile = open("whitelist.txt", "r")
+
+# Create list of whitelisted users from file
+whitelist = whitelistFile.read().replace("\n", "<>").split(">")
+if whitelist[-1] == "":
+    whitelist = whitelist[:-1]
+whitelist = [x.split(":")[0] if x[0]!=":" else "<" for x in whitelist]
+whitelist.remove("<")
+
+# Compile RegEx of banned words from file
 words = infile.read().replace('\n', ' ').split(" ") 
-infile.close()
-safefile.close()
+if words[-1] == "":
+    words = words[:-1]
 words_re = re.compile("|".join(words))
+
+# exit files
+infile.close()
+whitelistFile.close()
 
 app = Flask(__name__)
 
@@ -25,10 +30,10 @@ app = Flask(__name__)
 @app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
-    if data["sender_type"] == "user" and data["sender_id"] not in safe:
+    if data["sender_type"] == "user" and data["sender_id"] not in whitelist:
         checkMsg(data)
     else:
-        print("safe user or system")
+        print("system or whitelisted user")
     return "ok", 200
 
 """
@@ -36,8 +41,9 @@ def webhook():
     Doesn't kick if a user is part of the protected user's list
 """ 
 def checkMsg(data):
-    if words_re.search(data["text"].lower()):
-        print("banned word detected, initiating kick")
+    found = words_re.search(data["text"].lower())
+    if found:
+        print(f"banned word detected ({found.group()}), initiating kick")
         group = data["group_id"]
         userId = data["sender_id"]
         token = os.getenv("ACCESS_TOKEN")
@@ -64,7 +70,7 @@ def checkMsg(data):
         if id == "":
             print("not kicking ", end="-")
             if name=="":
-                print("no user")
+                print("no user or user already removed")
             return
 
         requests.post(f'https://api.groupme.com/v3/groups/{group}/members/{id}/remove?token={token}')
