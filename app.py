@@ -74,4 +74,4 @@ def checkMsg(data):
             return
 
         requests.post(f'https://api.groupme.com/v3/groups/{group}/members/{id}/remove?token={token}')
-        print(f"Kicked {id} ({name}) from {group}")
+        print(f"Kicked {userId} ({name}) from {group}")
